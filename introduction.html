@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Indroduction of How to Brush My Teeth</title>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        font-family: 'Gulim', sans-serif;
+        font-weight: 900;
+        margin: 10px;
+        padding: 20px;
+        width: 100vw;
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-sizing: border-box
+      }
+      
+      h1, p {
+        color: white;
+      }
+
+      h1 {
+        font-size: 80px;        /* 글자 크기 */
+        margin-bottom: 0px;    /* 아래쪽 간격 */
+        line-height: 80px;       /* 행간 */
+      }
+
+      p {
+        font-size: 50px;        /* 글자 크기 */
+        margin-bottom: 30px;    /* 아래쪽 간격 */
+        line-height: 50px;       /* 행간 */
+      }
+   
+      
+      #output {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0px;
+        line-height: 10px;
+        row-gap: 10px;
+
+      }
+      
+      #output span {
+        display: inline-block;
+        height: 30px;
+        line-height: 20px;
+        font-size: 20px;
+        white-space: normal;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+      }
+      
+      #output img {
+
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>양치학개론 Indroduction of How to Brush My Teeth</h1>
+    <p>~구강 건강을 위한 최고의 방법 The Best Way of Making My Teeth Clean~</p>
+    <div id="output"></div>
+   
+    <script>
+      const outputEl = document.getElementById("output");
+      let lastKey = "";
+      let repeatCount = 0;
+      let currentSize = 20;
+
+      function getRandomColor() {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        return `rgb(${r}, ${g}, ${b})`;
+      }
+      
+      function addDomElement(tag, attrs) {
+        const el = document.createElement(tag);
+        if (attrs) {
+          for (const k in attrs) {
+            if (k === "text") {
+              el.textContent = attrs[k];
+            } else {
+              el.setAttribute(k, attrs[k]);
+            }
+          }
+        }
+        
+        if (tag === "span") {
+          el.style.color = getRandomColor();
+          el.style.backgroundColor = getRandomColor();
+          el.style.fontSize = currentSize + "px";
+        }
+        
+        if (tag === "img") {
+          el.style.height = currentSize + "px";
+        }
+        outputEl.appendChild(el);
+        return el;
+      }
+
+      function playSound(url) {
+        const audio = new Audio(url);
+        audio.play();
+      }
+
+      document.addEventListener("keydown", function(event) {
+        console.log("Key pressed:", event.key);
+
+        if (event.key === lastKey && event.key !== "Backspace") {
+          repeatCount++;
+          currentSize = 20 + (repeatCount * 10);
+        } else {
+          lastKey = event.key;
+          repeatCount = 0;
+          currentSize = 20;
+        }
+
+        if (event.key === "Backspace") {
+          if (outputEl.lastChild) {
+            outputEl.removeChild(outputEl.lastChild);
+          }
+          //1열
+        } else if (event.key === "q") {
+          addDomElement("span", { text: "너 아직까지 양치 하니? " });
+        } else if (event.key === "Q") {
+          addDomElement("span", { text: "Are you still brushing your teeth? " });
+          
+        } else if (event.key === "w") {
+          addDomElement("span", { text: "주변 사람이 3번 정도 바뀌고 나서도 나는 계속 양치를 하고 있었다. " });
+        } else if (event.key === "W") {
+          addDomElement("span", { text: "Even after the people around me changed about 3 times, I continued to brush my teeth. " });
+
+        } else if (event.key === "e") {
+          addDomElement("span", { text: "그러다가 이 다 닳겠다. " });
+        } else if (event.key === "E") {
+          addDomElement("span", { text: "Then all your teeth might wear out and disappear. " });
+          
+        } else if (event.key === "r") {
+          addDomElement("span", { text: "방향제를 먹는 건 안 되는 거지? " });
+        } else if (event.key === "R") {
+          addDomElement("span", { text: "I can't eat air freshener, right? " });
+
+        } else if (event.key === "t") {
+          addDomElement("span", { text: "목에서 간장 냄새가 계속 나는 것 같아. " });
+        } else if (event.key === "T") {
+          addDomElement("span", { text: "I feel like my throat is constantly smelling like soy sauce. " });
+
+        } else if (event.key === "y") {
+          addDomElement("span", { text: "목에서 양파 냄새가 계속 나는 것 같아. " });
+        } else if (event.key === "Y") {
+          addDomElement("span", { text: "I feel like my throat is constantly smelling like onions. " });
+
+        } else if (event.key === "u") {
+          addDomElement("span", { text: "양치를 하다가 보니 문득, 나는 내 입과 목을 도려내면 좋을지도 모르겠다는 생각이 들었다. " });
+        } else if (event.key === "U") {
+          addDomElement("span", { text: "As I was brushing my teeth, it suddenly occurred to me that maybe it would be a good idea to cut out my mouth and throat. " });
+
+        } else if (event.key === "i") {
+          addDomElement("span", { text: "가글가글 " });
+        } else if (event.key === "I") {
+          addDomElement("span", { text: "Grrrrrrrrr " });
+
+        } else if (event.key === "o") {
+          addDomElement("span", { text: "나의 친구: 나도 한 번 양치할 때 세 번씩 해! " });
+        } else if (event.key === "O") {
+          addDomElement("span", { text: "My friend: I brush my teeth three times after eating! " });
+
+        } else if (event.key === "p") {
+          addDomElement("span", { text: "보글보글 " });
+        } else if (event.key === "P") {
+          addDomElement("span", { text: "Bubble Bubble " });
+          
+        //2열
+        } else if (event.key === "a" || event.key === "A") {
+          addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnc0N2ZneHpjMGQyeHhrZ2ViNHVnNzZrY3BtZWRmbWptM2VwM3AwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btYvi7DrV7xw5ZS/giphy.gif" });
+
+        } else if (event.key === "s" || event.key === "S") {
+          addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjRoZ2FwbHc2NW56YTd1YjRpaTI1NTdhODZ4ZHNrYnIwZ2JxMnoycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/G3va31oEEnIkM/giphy.gif" });
+
+        } else if (event.key === "d" || event.key === "D") {
+          addDomElement("img", { src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2VkYXRxcTl3bW9iZXZwc3B5MDM3cmY2aGY5M3MwMWx3YXo3eDFmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NwIjtWI08MB1K/giphy.gif" });
+
+        } else if (event.key === "f" || event.key === "F") {
+          addDomElement("img", { src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTloaGF3djd2Z3k5NGIzajRrdmt3OHF2cWR6cDl6Y3p1MDkxcGxvYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ToMjGpOiLXsuR4yYkMg/giphy.gif" });
+        
+        } else if (event.key === "g") {
+          playSound("https://www.epidemicsound.com/sound-effects/tracks/df4709fa-f3b4-43cf-8fc9-b1e37896da24/");
+          addDomElement("span", { text: "위이이이이이이이이이이잉커억커어어억커어억위이이이이이잉" });
+        } else if (event.key === "G") {
+          playSound("https://www.epidemicsound.com/sound-effects/tracks/df4709fa-f3b4-43cf-8fc9-b1e37896da24/");
+          addDomElement("span", { text: "wiiiiiiiiiiiingkeoeogkeoeoeoeogkeoeoeog-wiiiiiiing" });
+
+        } else if (event.key === "h") {
+          playSound("https://www.epidemicsound.com/sound-effects/tracks/d258e283-4cd3-4e4c-84ec-8535e1e5a1be/");
+          addDomElement("span", { text: "가글가글" });
+        } else if (event.key === "H") {
+          playSound("https://www.epidemicsound.com/sound-effects/tracks/d258e283-4cd3-4e4c-84ec-8535e1e5a1be/");
+          addDomElement("span", { text: "Grrrrrrr" });
+
+        } else if (event.key === "j" || event.key === "J") {
+          addDomElement("img", { src: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmtzNGd6eHc3NXdyZWdhNnJoOWNmaW84emN2NHdzcXk4cHhkYXN2aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IXN8Dut4YcF9e/giphy.gif" });
+
+        } else if (event.key === "k" || event.key === "K") {
+          addDomElement("img", { src: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjB3eGlweHBlemhsYmY0MnZkeDZ6YjRlbXp4NGJ2Yzdsb25namJoZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lTXJRZtWvw4f6YORIN/giphy.gif" });
+
+        } else if (event.key === "l" || event.key === "L") {
+          addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZxa2ZoMTY2ZXlpMWt1cGZzN21yeGZqaXFhdjJsaHI4cWphOTZleSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8zSLvwlVtPzWg/giphy.gif" });
+
+        //3열
+        } else if (event.key === "z") {
+          addDomElement("span", { text: "제 1장. 치아 교정을 하라. " });
+        } else if (event.key === "Z") {
+          addDomElement("span", { text: "Chapter 1. Getting braces. " });
+          
+        } else if (event.key === "x") {
+          addDomElement("span", { text: "제 2장. 치실을 사용하라. " });
+        } else if (event.key === "X") {
+          addDomElement("span", { text: "Chapter 2. Floss your teeth. " });
+
+        } else if (event.key === "c") {
+          addDomElement("span", { text: "제 3장. 치약을 많이 사용하라. " });
+        } else if (event.key === "C") {
+          addDomElement("span", { text: "Chapter 3. Use plenty of toothpaste. " });
+
+        } else if (event.key === "v") {
+          addDomElement("span", { text: "제 4장. 무언가를 먹으면 바로 이를 닦아라. " });
+        } else if (event.key === "V") {
+          addDomElement("span", { text: "Chapter 4. Brush your teeth immediately after eating. " });
+
+        } else if (event.key === "b") {
+          addDomElement("span", { text: "제 5장. 잇몸이 벗겨질 때까지 양치를 하라. " });
+        } else if (event.key === "B") {
+          addDomElement("span", { text: "Chapter 5. Brush your teeth until your gums are peeled. " });
+
+        } else if (event.key === "n") {
+          addDomElement("span", { text: "제 6장. 치약은 강할 수록 좋다. " });
+        } else if (event.key === "N") {
+          addDomElement("span", { text: "Chapter 6. The stronger the toothpaste smells, the better. " });
+
+        } else if (event.key === "m") {
+          addDomElement("span", { text: "제 7장. 양치의 마무리는 가그린. " });
+        } else if (event.key === "M") {
+          addDomElement("span", { text: "Chapter 7. Finish your brushing with a mouthwash. " });
+
+        } else {
+          addDomElement("span", { text: "고도로 발전한 나의 양치 실력! 양치! 양치! 양치! "});
+        }
+      }); 
+    </script>
+    
+  </body>
+
+</html>
