@@ -15,7 +15,8 @@
         height: 100vh;
         overflow-x: hidden;
         overflow-y: auto;
-        box-sizing: border-box
+        box-sizing: border-box;
+        position: relative;
       }
       
       h1, p {
@@ -23,15 +24,15 @@
       }
 
       h1 {
-        font-size: 80px;        /* 글자 크기 */
-        margin-bottom: 0px;    /* 아래쪽 간격 */
-        line-height: 80px;       /* 행간 */
+        font-size: 80px;        
+        margin-bottom: 0px;    
+        line-height: 80px;      
       }
 
       p {
-        font-size: 50px;        /* 글자 크기 */
-        margin-bottom: 30px;    /* 아래쪽 간격 */
-        line-height: 50px;       /* 행간 */
+        font-size: 50px;       
+        margin-bottom: 30px;   
+        line-height: 50px;     
       }
    
       
@@ -39,25 +40,51 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 0px;
-        line-height: 10px;
-        row-gap: 10px;
-
+        gap: 5px;
+        line-height: 1.0;
+        row-gap: 2px;
       }
       
       #output span {
-        display: inline-block;
-        height: 30px;
-        line-height: 20px;
+        display: inline;
+        line-height: 1.0;
         font-size: 20px;
         white-space: normal;
         word-break: keep-all;
         overflow-wrap: break-word;
+        padding: 0px 2px;
+        box-sizing: border-box;
       }
       
       #output img {
-
         width: auto;
+        display: inline-block;
+      }
+      
+      .floating-emoji {
+        position: fixed;
+        font-size: 50px;
+        pointer-events: none;
+        z-index: 1000;
+        animation: float-around 10s linear infinite;
+      }
+      
+      @keyframes float-around {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(100px, -100px) rotate(90deg);
+        }
+        50% {
+          transform: translate(200px, 50px) rotate(180deg);
+        }
+        75% {
+          transform: translate(-50px, 100px) rotate(270deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(360deg);
+        }
       }
     </style>
   </head>
@@ -95,6 +122,8 @@
           el.style.color = getRandomColor();
           el.style.backgroundColor = getRandomColor();
           el.style.fontSize = currentSize + "px";
+          el.style.lineHeight = currentSize + "px";
+          el.style.padding = "0px " + (currentSize * 0.1) + "px";
         }
         
         if (tag === "img") {
@@ -108,9 +137,50 @@
         const audio = new Audio(url);
         audio.play();
       }
+      
+      function addFloatingEmoji() {
+        const emojis = ['🪥', '🦷'];
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        const randomHue = Math.floor(Math.random() * 360);
+        
+        const floatingEl = document.createElement('div');
+        floatingEl.className = 'floating-emoji';
+        floatingEl.textContent = randomEmoji;
+        floatingEl.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+        floatingEl.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+        floatingEl.style.filter = `hue-rotate(${randomHue}deg)`;
+        floatingEl.style.fontSize = '50px';
+        
+        document.body.appendChild(floatingEl);
+        
+        setTimeout(() => {
+          floatingEl.remove();
+        }, 10000);
+      }
+      
+      function addFloatingImage(imgSrc) {
+        const floatingImg = document.createElement('div');
+        floatingImg.className = 'floating-emoji';
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        img.style.width = '100px';
+        img.style.height = 'auto';
+        floatingImg.appendChild(img);
+        
+        floatingImg.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+        floatingImg.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+        
+        document.body.appendChild(floatingImg);
+        
+        setTimeout(() => {
+          floatingImg.remove();
+        }, 10000);
+      }
 
       document.addEventListener("keydown", function(event) {
         console.log("Key pressed:", event.key);
+        
+        addFloatingEmoji();
 
         if (event.key === lastKey && event.key !== "Backspace") {
           repeatCount++;
@@ -179,15 +249,19 @@
         //2열
         } else if (event.key === "a" || event.key === "A") {
           addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnc0N2ZneHpjMGQyeHhrZ2ViNHVnNzZrY3BtZWRmbWptM2VwM3AwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btYvi7DrV7xw5ZS/giphy.gif" });
+          addFloatingImage("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnc0N2ZneHpjMGQyeHhrZ2ViNHVnNzZrY3BtZWRmbWptM2VwM3AwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btYvi7DrV7xw5ZS/giphy.gif");
 
         } else if (event.key === "s" || event.key === "S") {
           addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjRoZ2FwbHc2NW56YTd1YjRpaTI1NTdhODZ4ZHNrYnIwZ2JxMnoycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/G3va31oEEnIkM/giphy.gif" });
+          addFloatingImage("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjRoZ2FwbHc2NW56YTd1YjRpaTI1NTdhODZ4ZHNrYnIwZ2JxMnoycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/G3va31oEEnIkM/giphy.gif");
 
         } else if (event.key === "d" || event.key === "D") {
           addDomElement("img", { src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2VkYXRxcTl3bW9iZXZwc3B5MDM3cmY2aGY5M3MwMWx3YXo3eDFmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NwIjtWI08MB1K/giphy.gif" });
+          addFloatingImage("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2VkYXRxcTl3bW9iZXZwc3B5MDM3cmY2aGY5M3MwMWx3YXo3eDFmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NwIjtWI08MB1K/giphy.gif");
 
         } else if (event.key === "f" || event.key === "F") {
           addDomElement("img", { src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTloaGF3djd2Z3k5NGIzajRrdmt3OHF2cWR6cDl6Y3p1MDkxcGxvYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ToMjGpOiLXsuR4yYkMg/giphy.gif" });
+          addFloatingImage("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTloaGF3djd2Z3k5NGIzajRrdmt3OHF2cWR6cDl6Y3p1MDkxcGxvYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ToMjGpOiLXsuR4yYkMg/giphy.gif");
         
         } else if (event.key === "g") {
           playSound("https://www.epidemicsound.com/sound-effects/tracks/df4709fa-f3b4-43cf-8fc9-b1e37896da24/");
@@ -205,12 +279,15 @@
 
         } else if (event.key === "j" || event.key === "J") {
           addDomElement("img", { src: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmtzNGd6eHc3NXdyZWdhNnJoOWNmaW84emN2NHdzcXk4cHhkYXN2aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IXN8Dut4YcF9e/giphy.gif" });
+          addFloatingImage("https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmtzNGd6eHc3NXdyZWdhNnJoOWNmaW84emN2NHdzcXk4cHhkYXN2aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IXN8Dut4YcF9e/giphy.gif");
 
         } else if (event.key === "k" || event.key === "K") {
           addDomElement("img", { src: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjB3eGlweHBlemhsYmY0MnZkeDZ6YjRlbXp4NGJ2Yzdsb25namJoZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lTXJRZtWvw4f6YORIN/giphy.gif" });
+          addFloatingImage("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjB3eGlweHBlemhsYmY0MnZkeDZ6YjRlbXp4NGJ2Yzdsb25namJoZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lTXJRZtWvw4f6YORIN/giphy.gif");
 
         } else if (event.key === "l" || event.key === "L") {
           addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZxa2ZoMTY2ZXlpMWt1cGZzN21yeGZqaXFhdjJsaHI4cWphOTZleSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8zSLvwlVtPzWg/giphy.gif" });
+          addFloatingImage("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZxa2ZoMTY2ZXlpMWt1cGZzN21yeGZqaXFhdjJsaHI4cWphOTZleSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8zSLvwlVtPzWg/giphy.gif");
 
         //3열
         } else if (event.key === "z") {
