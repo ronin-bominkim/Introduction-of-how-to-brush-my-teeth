@@ -2,65 +2,285 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Indroduction of How to Brush My Teeth</title>
+    <title>양치학개론</title>
     <style>
       body {
-        background-color: black;
-        color: white;
-        font-family: 'Gulim', sans-serif;
-        font-weight: 900;
-        margin: 10px;
-        padding: 20px;
+        margin: 0;
+        padding: 0;
         width: 100vw;
         height: 100vh;
-        overflow-x: hidden;
-        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: 
+          radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%),
+          linear-gradient(135deg, #8b6f47 0%, #6b5639 100%);
+        background-size: 100% 100%;
+        perspective: 2000px;
+        overflow: hidden;
+      }
+      
+      body::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: 
+          repeating-linear-gradient(90deg, 
+            transparent, 
+            transparent 2px, 
+            rgba(139, 90, 43, 0.1) 2px, 
+            rgba(139, 90, 43, 0.1) 4px),
+          repeating-linear-gradient(0deg, 
+            transparent, 
+            transparent 80px, 
+            rgba(139, 90, 43, 0.05) 80px, 
+            rgba(139, 90, 43, 0.05) 82px);
+        pointer-events: none;
+      }
+
+      .book {
+        position: relative;
+        width: 400px;
+        height: 600px;
+        transform-style: preserve-3d;
+        transform: rotateX(10deg) rotateY(-35deg) rotateZ(2deg);
+        transition: transform 0.8s;
+        filter: drop-shadow(30px 40px 50px rgba(0,0,0,0.6));
+      }
+
+      .book.open {
+        transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg);
+      }
+
+      /* 책등 */
+      .spine {
+        position: absolute;
+        left: -30px;
+        width: 30px;
+        height: 600px;
+        background: linear-gradient(to right, #8b4513, #a0522d);
+        transform-origin: right center;
+        transform: rotateY(-90deg);
+        border-left: 2px solid #654321;
+      }
+
+      /* 앞표지 */
+      .front-cover {
+        position: absolute;
+        width: 400px;
+        height: 600px;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        border: 3px solid #1a252f;
+        border-radius: 0 5px 5px 0;
+        box-shadow: 
+          inset -10px -10px 30px rgba(0,0,0,0.4),
+          inset 10px 10px 30px rgba(255,255,255,0.1),
+          5px 0 10px rgba(0,0,0,0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: gold;
+        font-family: 'Georgia', serif;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        transform-origin: left center;
+        transition: transform 1.2s;
+        cursor: pointer;
+        z-index: 3;
+      }
+
+      .front-cover::after {
+        content: '';
+        position: absolute;
+        right: -8px;
+        top: 0;
+        width: 8px;
+        height: 600px;
+        background: linear-gradient(to right, #1a252f 0%, #0f1419 100%);
+        border-radius: 0 2px 2px 0;
+      }
+
+      .book.open .front-cover {
+        transform: rotateY(-160deg);
+      }
+
+      /* 금박 장식 */
+      .decoration {
+        position: absolute;
+        width: 80%;
+        height: 80%;
+        border: 3px double gold;
+        border-radius: 10px;
+        opacity: 0.6;
+      }
+
+      .front-cover h1 {
+        font-size: 42px;
+        margin: 20px;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 2px;
+        transition: opacity 0.5s;
+      }
+
+      .front-cover p {
+        font-size: 18px;
+        margin: 10px;
+        text-align: center;
+        font-style: italic;
+        transition: opacity 0.5s;
+      }
+
+      .book.open .front-cover h1,
+      .book.open .front-cover p,
+      .book.open .decoration {
+        opacity: 0;
+      }
+
+      /* 뒷표지 */
+      .back-cover {
+        position: absolute;
+        width: 400px;
+        height: 600px;
+        background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+        border: 3px solid #0d1216;
+        border-radius: 5px 0 0 5px;
+        transform: translateZ(-16px);
+        box-shadow: 
+          inset 0 0 20px rgba(0,0,0,0.5),
+          0 0 10px rgba(0,0,0,0.4);
+      }
+
+      .back-cover::before {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 0;
+        width: 8px;
+        height: 600px;
+        background: linear-gradient(to left, #0d1216 0%, #050608 100%);
+        border-radius: 2px 0 0 2px;
+      }
+
+      /* 책의 두께감 */
+      .pages {
+        position: absolute;
+        right: -8px;
+        top: 3px;
+        width: 390px;
+        height: 594px;
+        background: repeating-linear-gradient(
+          90deg,
+          #f5f5dc 0px,
+          #fffacd 0.5px,
+          #f5f5dc 1px,
+          #f0e68c 1.5px,
+          #f5f5dc 2px
+        );
+        border-right: 3px solid #d4af37;
+        border-top: 1px solid #e6d9b8;
+        border-bottom: 1px solid #d4af37;
+        transform: translateZ(-8px);
+        box-shadow: 
+          inset -2px 0 5px rgba(0,0,0,0.2),
+          2px 0 3px rgba(0,0,0,0.3);
+      }
+
+      /* 책 아랫면 */
+      .bottom {
+        position: absolute;
+        width: 400px;
+        height: 30px;
+        background: linear-gradient(to bottom, #1a252f 0%, #0d1216 100%);
+        transform-origin: top center;
+        transform: rotateX(90deg) translateZ(570px);
+        border: 2px solid #0d1216;
+      }
+
+      /* 책 윗면 */
+      .top {
+        position: absolute;
+        width: 400px;
+        height: 30px;
+        background: linear-gradient(to top, #2c3e50 0%, #34495e 100%);
+        transform-origin: bottom center;
+        transform: rotateX(90deg) translateZ(-30px);
+        border: 2px solid #1a252f;
+      }
+
+      /* 펼쳐진 페이지 */
+      .open-pages {
+        position: absolute;
+        width: 800px;
+        height: 600px;
+        left: -400px;
+        display: none;
+        z-index: 1;
+        transform-style: preserve-3d;
+      }
+
+      .book.open .open-pages {
+        display: flex;
+      }
+
+      .page {
+        width: 400px;
+        height: 600px;
+        background: #f5f5dc;
+        border: 2px solid #d4af37;
+        padding: 40px;
         box-sizing: border-box;
+        overflow: hidden;
+        font-family: 'Gulim', sans-serif;
+        font-weight: 900;
         position: relative;
       }
-      
-      h1, p {
-        color: white;
+
+      .page.left {
+        border-right: 1px solid #d4af37;
       }
 
-      h1 {
-        font-size: 80px;        
-        margin-bottom: 0px;    
-        line-height: 80px;      
+      .page.right {
+        border-left: 1px solid #d4af37;
       }
 
-      p {
-        font-size: 50px;       
-        margin-bottom: 30px;   
-        line-height: 50px;     
+      .page-number {
+        position: absolute;
+        bottom: 20px;
+        right: 40px;
+        font-size: 16px;
+        color: #8b7355;
+        font-family: 'Georgia', serif;
       }
-   
-      
+
       #output {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
         gap: 5px;
-        line-height: 1.0;
-        row-gap: 2px;
+        align-items: flex-start;
+        line-height: 1.3;
+        height: 100%;
+        overflow: hidden;
       }
-      
+
       #output span {
-        display: inline;
-        line-height: 1.0;
+        display: inline-block;
+        line-height: 1.3;
         font-size: 20px;
         white-space: normal;
         word-break: keep-all;
         overflow-wrap: break-word;
-        padding: 0px 2px;
+        padding: 2px 4px;
         box-sizing: border-box;
       }
-      
+
       #output img {
         width: auto;
         display: inline-block;
+        vertical-align: middle;
       }
-      
+
       .floating-emoji {
         position: fixed;
         font-size: 50px;
@@ -68,7 +288,7 @@
         z-index: 1000;
         animation: float-around 10s linear infinite;
       }
-      
+
       @keyframes float-around {
         0% {
           transform: translate(0, 0) rotate(0deg);
@@ -86,18 +306,125 @@
           transform: translate(0, 0) rotate(360deg);
         }
       }
+
+      #instruction {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-family: 'Georgia', serif;
+        font-size: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        animation: pulse 2s infinite;
+        pointer-events: none;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      .book.open #instruction {
+        display: none;
+      }
+
+      /* 페이지 넘김 애니메이션 - 3D 회전 */
+      .page.right {
+        transform-style: preserve-3d;
+        transform-origin: left center;
+        transition: transform 0.6s ease-in-out;
+        position: relative;
+      }
+
+      .page-turning {
+        animation: pageTurn3D 0.6s ease-in-out forwards;
+      }
+
+      @keyframes pageTurn3D {
+        0% {
+          transform: rotateY(0deg);
+          z-index: 10;
+        }
+        100% {
+          transform: rotateY(-180deg);
+          z-index: 1;
+        }
+      }
+
+      .page-appear {
+        animation: pageAppear3D 0.6s ease-in-out forwards;
+      }
+
+      @keyframes pageAppear3D {
+        0% {
+          transform: rotateY(180deg);
+          opacity: 0;
+        }
+        100% {
+          transform: rotateY(0deg);
+          opacity: 1;
+        }
+      }
+
+      /* 넘어가는 페이지의 뒷면 */
+      .page.right::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: #e6dcc8;
+        transform: rotateY(180deg);
+        backface-visibility: visible;
+        z-index: -1;
+      }
     </style>
   </head>
   <body>
-    <h1>양치학개론 Indroduction of How to Brush My Teeth</h1>
-    <p>~구강 건강을 위한 최고의 방법 The Best Way of Making My Teeth Clean~</p>
-    <div id="output"></div>
    
+    
+    <div class="book">
+      <div class="spine"></div>
+      <div class="back-cover"></div>
+      <div class="pages"></div>
+      <div class="top"></div>
+      <div class="bottom"></div>
+      
+      <div class="open-pages">
+        <div class="page left"></div>
+        <div class="page right">
+          <div id="output"></div>
+          <div class="page-number">1</div>
+        </div>
+      </div>
+      
+      <div class="front-cover">
+        <div class="decoration"></div>
+        <h1>양치학개론</h1>
+        <p>Introduction of How to Brush My Teeth</p>
+      </div>
+    </div>
+
     <script>
-      const outputEl = document.getElementById("output");
+      const book = document.querySelector('.book');
+      const frontCover = document.querySelector('.front-cover');
+      const openPages = document.querySelector('.open-pages');
+      let outputEl = document.getElementById('output');
+      let isOpen = false;
       let lastKey = "";
       let repeatCount = 0;
       let currentSize = 20;
+      let currentPageNum = 1;
+      const maxPageHeight = 520; // 페이지 높이 제한
+
+      frontCover.addEventListener('click', function() {
+        if (!isOpen) {
+          book.classList.add('open');
+          isOpen = true;
+        }
+      });
 
       function getRandomColor() {
         const r = Math.floor(Math.random() * 256);
@@ -105,7 +432,7 @@
         const b = Math.floor(Math.random() * 256);
         return `rgb(${r}, ${g}, ${b})`;
       }
-      
+
       function addDomElement(tag, attrs) {
         const el = document.createElement(tag);
         if (attrs) {
@@ -122,22 +449,86 @@
           el.style.color = getRandomColor();
           el.style.backgroundColor = getRandomColor();
           el.style.fontSize = currentSize + "px";
-          el.style.lineHeight = currentSize + "px";
-          el.style.padding = "0px " + (currentSize * 0.1) + "px";
+          el.style.lineHeight = (currentSize * 1.3) + "px";
+          el.style.padding = "2px " + (currentSize * 0.2) + "px";
         }
         
         if (tag === "img") {
           el.style.height = currentSize + "px";
         }
+        
         outputEl.appendChild(el);
+        
+        // 페이지 높이 체크
+        if (outputEl.scrollHeight > maxPageHeight) {
+          outputEl.removeChild(el); // 마지막 요소 제거
+          turnPage(); // 페이지 넘김
+          outputEl.appendChild(el); // 새 페이지에 추가
+        }
+        
         return el;
       }
 
-      function playSound(url) {
-        const audio = new Audio(url);
-        audio.play();
+      function turnPage() {
+        currentPageNum++;
+        
+        const rightPage = document.querySelector('.page.right');
+        
+        // 현재 페이지 복사 (넘어갈 페이지)
+        const turningPage = rightPage.cloneNode(true);
+        turningPage.style.position = 'absolute';
+        turningPage.style.left = '400px';
+        turningPage.style.zIndex = '10';
+        openPages.appendChild(turningPage);
+        
+        // 페이지 넘김 애니메이션
+        setTimeout(() => {
+          turningPage.classList.add('page-turning');
+        }, 10);
+        
+        // 새 페이지 준비
+        const newOutput = document.createElement('div');
+        newOutput.id = 'output';
+        newOutput.style.display = 'flex';
+        newOutput.style.flexWrap = 'wrap';
+        newOutput.style.gap = '5px';
+        newOutput.style.alignItems = 'flex-start';
+        newOutput.style.lineHeight = '1.3';
+        newOutput.style.height = '100%';
+        newOutput.style.overflow = 'hidden';
+        
+        const newPageNum = document.createElement('div');
+        newPageNum.className = 'page-number';
+        newPageNum.textContent = currentPageNum;
+        
+        rightPage.innerHTML = '';
+        rightPage.appendChild(newOutput);
+        rightPage.appendChild(newPageNum);
+        rightPage.style.opacity = '0';
+        
+        outputEl = newOutput;
+        
+        // 애니메이션 완료 후 정리
+        setTimeout(() => {
+          turningPage.remove();
+          rightPage.style.opacity = '1';
+          rightPage.classList.add('page-appear');
+          
+          setTimeout(() => {
+            rightPage.classList.remove('page-appear');
+          }, 600);
+        }, 600);
       }
-      
+
+      function playSound(url) {
+        try {
+          const audio = new Audio(url);
+          audio.play();
+        } catch (e) {
+          console.log("Could not play sound:", e);
+        }
+      }
+
       function addFloatingEmoji() {
         const emojis = ['🪥', '🦷'];
         const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -149,7 +540,6 @@
         floatingEl.style.left = Math.random() * (window.innerWidth - 100) + 'px';
         floatingEl.style.top = Math.random() * (window.innerHeight - 100) + 'px';
         floatingEl.style.filter = `hue-rotate(${randomHue}deg)`;
-        floatingEl.style.fontSize = '50px';
         
         document.body.appendChild(floatingEl);
         
@@ -157,7 +547,7 @@
           floatingEl.remove();
         }, 10000);
       }
-      
+
       function addFloatingImage(imgSrc) {
         const floatingImg = document.createElement('div');
         floatingImg.className = 'floating-emoji';
@@ -178,7 +568,7 @@
       }
 
       document.addEventListener("keydown", function(event) {
-        console.log("Key pressed:", event.key);
+        if (!isOpen) return;
         
         addFloatingEmoji();
 
@@ -195,142 +585,111 @@
           if (outputEl.lastChild) {
             outputEl.removeChild(outputEl.lastChild);
           }
-          //1열
         } else if (event.key === "q") {
           addDomElement("span", { text: "너 아직까지 양치 하니? " });
         } else if (event.key === "Q") {
           addDomElement("span", { text: "Are you still brushing your teeth? " });
-          
         } else if (event.key === "w") {
           addDomElement("span", { text: "주변 사람이 3번 정도 바뀌고 나서도 나는 계속 양치를 하고 있었다. " });
         } else if (event.key === "W") {
           addDomElement("span", { text: "Even after the people around me changed about 3 times, I continued to brush my teeth. " });
-
         } else if (event.key === "e") {
           addDomElement("span", { text: "그러다가 이 다 닳겠다. " });
         } else if (event.key === "E") {
           addDomElement("span", { text: "Then all your teeth might wear out and disappear. " });
-          
         } else if (event.key === "r") {
           addDomElement("span", { text: "방향제를 먹는 건 안 되는 거지? " });
         } else if (event.key === "R") {
           addDomElement("span", { text: "I can't eat air freshener, right? " });
-
         } else if (event.key === "t") {
           addDomElement("span", { text: "목에서 간장 냄새가 계속 나는 것 같아. " });
         } else if (event.key === "T") {
           addDomElement("span", { text: "I feel like my throat is constantly smelling like soy sauce. " });
-
         } else if (event.key === "y") {
           addDomElement("span", { text: "목에서 양파 냄새가 계속 나는 것 같아. " });
         } else if (event.key === "Y") {
           addDomElement("span", { text: "I feel like my throat is constantly smelling like onions. " });
-
         } else if (event.key === "u") {
           addDomElement("span", { text: "양치를 하다가 보니 문득, 나는 내 입과 목을 도려내면 좋을지도 모르겠다는 생각이 들었다. " });
         } else if (event.key === "U") {
           addDomElement("span", { text: "As I was brushing my teeth, it suddenly occurred to me that maybe it would be a good idea to cut out my mouth and throat. " });
-
         } else if (event.key === "i") {
           addDomElement("span", { text: "가글가글 " });
         } else if (event.key === "I") {
           addDomElement("span", { text: "Grrrrrrrrr " });
-
         } else if (event.key === "o") {
           addDomElement("span", { text: "나의 친구: 나도 한 번 양치할 때 세 번씩 해! " });
         } else if (event.key === "O") {
           addDomElement("span", { text: "My friend: I brush my teeth three times after eating! " });
-
         } else if (event.key === "p") {
           addDomElement("span", { text: "보글보글 " });
         } else if (event.key === "P") {
           addDomElement("span", { text: "Bubble Bubble " });
-          
-        //2열
         } else if (event.key === "a" || event.key === "A") {
           addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnc0N2ZneHpjMGQyeHhrZ2ViNHVnNzZrY3BtZWRmbWptM2VwM3AwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btYvi7DrV7xw5ZS/giphy.gif" });
           addFloatingImage("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnc0N2ZneHpjMGQyeHhrZ2ViNHVnNzZrY3BtZWRmbWptM2VwM3AwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btYvi7DrV7xw5ZS/giphy.gif");
-
         } else if (event.key === "s" || event.key === "S") {
           addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjRoZ2FwbHc2NW56YTd1YjRpaTI1NTdhODZ4ZHNrYnIwZ2JxMnoycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/G3va31oEEnIkM/giphy.gif" });
           addFloatingImage("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjRoZ2FwbHc2NW56YTd1YjRpaTI1NTdhODZ4ZHNrYnIwZ2JxMnoycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/G3va31oEEnIkM/giphy.gif");
-
         } else if (event.key === "d" || event.key === "D") {
           addDomElement("img", { src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2VkYXRxcTl3bW9iZXZwc3B5MDM3cmY2aGY5M3MwMWx3YXo3eDFmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NwIjtWI08MB1K/giphy.gif" });
           addFloatingImage("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2VkYXRxcTl3bW9iZXZwc3B5MDM3cmY2aGY5M3MwMWx3YXo3eDFmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NwIjtWI08MB1K/giphy.gif");
-
         } else if (event.key === "f" || event.key === "F") {
           addDomElement("img", { src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTloaGF3djd2Z3k5NGIzajRrdmt3OHF2cWR6cDl6Y3p1MDkxcGxvYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ToMjGpOiLXsuR4yYkMg/giphy.gif" });
           addFloatingImage("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTloaGF3djd2Z3k5NGIzajRrdmt3OHF2cWR6cDl6Y3p1MDkxcGxvYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ToMjGpOiLXsuR4yYkMg/giphy.gif");
-        
         } else if (event.key === "g") {
           playSound("https://www.epidemicsound.com/sound-effects/tracks/df4709fa-f3b4-43cf-8fc9-b1e37896da24/");
           addDomElement("span", { text: "위이이이이이이이이이이잉커억커어어억커어억위이이이이이잉" });
         } else if (event.key === "G") {
           playSound("https://www.epidemicsound.com/sound-effects/tracks/df4709fa-f3b4-43cf-8fc9-b1e37896da24/");
           addDomElement("span", { text: "wiiiiiiiiiiiingkeoeogkeoeoeoeogkeoeoeog-wiiiiiiing" });
-
         } else if (event.key === "h") {
           playSound("https://www.epidemicsound.com/sound-effects/tracks/d258e283-4cd3-4e4c-84ec-8535e1e5a1be/");
           addDomElement("span", { text: "가글가글" });
         } else if (event.key === "H") {
           playSound("https://www.epidemicsound.com/sound-effects/tracks/d258e283-4cd3-4e4c-84ec-8535e1e5a1be/");
           addDomElement("span", { text: "Grrrrrrr" });
-
         } else if (event.key === "j" || event.key === "J") {
           addDomElement("img", { src: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmtzNGd6eHc3NXdyZWdhNnJoOWNmaW84emN2NHdzcXk4cHhkYXN2aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IXN8Dut4YcF9e/giphy.gif" });
           addFloatingImage("https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmtzNGd6eHc3NXdyZWdhNnJoOWNmaW84emN2NHdzcXk4cHhkYXN2aiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IXN8Dut4YcF9e/giphy.gif");
-
         } else if (event.key === "k" || event.key === "K") {
           addDomElement("img", { src: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjB3eGlweHBlemhsYmY0MnZkeDZ6YjRlbXp4NGJ2Yzdsb25namJoZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lTXJRZtWvw4f6YORIN/giphy.gif" });
           addFloatingImage("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjB3eGlweHBlemhsYmY0MnZkeDZ6YjRlbXp4NGJ2Yzdsb25namJoZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lTXJRZtWvw4f6YORIN/giphy.gif");
-
         } else if (event.key === "l" || event.key === "L") {
           addDomElement("img", { src: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZxa2ZoMTY2ZXlpMWt1cGZzN21yeGZqaXFhdjJsaHI4cWphOTZleSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8zSLvwlVtPzWg/giphy.gif" });
           addFloatingImage("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZxa2ZoMTY2ZXlpMWt1cGZzN21yeGZqaXFhdjJsaHI4cWphOTZleSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8zSLvwlVtPzWg/giphy.gif");
-
-        //3열
         } else if (event.key === "z") {
           addDomElement("span", { text: "제 1장. 치아 교정을 하라. " });
         } else if (event.key === "Z") {
           addDomElement("span", { text: "Chapter 1. Getting braces. " });
-          
         } else if (event.key === "x") {
           addDomElement("span", { text: "제 2장. 치실을 사용하라. " });
         } else if (event.key === "X") {
           addDomElement("span", { text: "Chapter 2. Floss your teeth. " });
-
         } else if (event.key === "c") {
           addDomElement("span", { text: "제 3장. 치약을 많이 사용하라. " });
         } else if (event.key === "C") {
           addDomElement("span", { text: "Chapter 3. Use plenty of toothpaste. " });
-
         } else if (event.key === "v") {
           addDomElement("span", { text: "제 4장. 무언가를 먹으면 바로 이를 닦아라. " });
         } else if (event.key === "V") {
           addDomElement("span", { text: "Chapter 4. Brush your teeth immediately after eating. " });
-
         } else if (event.key === "b") {
           addDomElement("span", { text: "제 5장. 잇몸이 벗겨질 때까지 양치를 하라. " });
         } else if (event.key === "B") {
           addDomElement("span", { text: "Chapter 5. Brush your teeth until your gums are peeled. " });
-
         } else if (event.key === "n") {
           addDomElement("span", { text: "제 6장. 치약은 강할 수록 좋다. " });
         } else if (event.key === "N") {
           addDomElement("span", { text: "Chapter 6. The stronger the toothpaste smells, the better. " });
-
         } else if (event.key === "m") {
           addDomElement("span", { text: "제 7장. 양치의 마무리는 가그린. " });
         } else if (event.key === "M") {
           addDomElement("span", { text: "Chapter 7. Finish your brushing with a mouthwash. " });
-
         } else {
           addDomElement("span", { text: "고도로 발전한 나의 양치 실력! 양치! 양치! 양치! "});
         }
-      }); 
+      });
     </script>
-    
   </body>
-
 </html>
