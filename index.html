@@ -4,11 +4,18 @@
     <meta charset="utf-8">
     <title>Introduction of How to Brush My Teeth</title>
     <style>
-      body {
+      * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        width: 100vw;
-        height: 100vh;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -16,7 +23,10 @@
           radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%),
           linear-gradient(135deg, #8b6f47 0%, #6b5639 100%);
         background-size: 100% 100%;
-        perspective: 2000px;
+        perspective: 1600px;
+        -moz-perspective: 1600px;
+        -webkit-perspective: 1600px;
+        font-family: 'Gulim', sans-serif;
         overflow: hidden;
       }
       
@@ -39,25 +49,19 @@
         pointer-events: none;
       }
 
-      .book {
+      .book-container {
         position: relative;
-        width: 400px;
+        width: 800px;
         height: 600px;
-        transform-style: preserve-3d;
-        transition: transform 0.8s;
-        filter: drop-shadow(30px 40px 50px rgba(0,0,0,0.6));
       }
-
-      .book.open {
-        transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg) translateX(200px);
-      }
-
 
       /* 앞표지 */
       .front-cover {
         position: absolute;
         width: 400px;
         height: 600px;
+        left: 50%;
+        margin-left: -200px;
         background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         border: 3px solid #1a252f;
         border-radius: 0 5px 5px 0;
@@ -72,28 +76,30 @@
         color: gold;
         font-family: 'Georgia', serif;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        transform-origin: left center;
-        transition: transform 1.2s;
         cursor: pointer;
-        z-index: 3;
+        z-index: 100;
+        backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform-origin: 0% 0%;
+        -o-transform-origin: 0% 0%;
+        -ms-transform-origin: 0% 0%;
+        -moz-transform-origin: 0% 0%;
+        -webkit-transform-origin: 0% 0%;
+        transition: transform 1.0s ease;
+        -o-transition: transform 1.0s ease;
+        -moz-transition: transform 1.0s ease;
+        -webkit-transition: transform 1.0s ease;
       }
 
-      .front-cover::after {
-        content: '';
-        position: absolute;
-        right: -8px;
-        top: 0;
-        width: 8px;
-        height: 600px;
-        background: linear-gradient(to right, #1a252f 0%, #0f1419 100%);
-        border-radius: 0 2px 2px 0;
-      }
-
-      .book.open .front-cover {
+      .front-cover.open {
         transform: rotateY(-160deg);
+        -o-transform: rotateY(-160deg);
+        -ms-transform: rotateY(-160deg);
+        -moz-transform: rotateY(-160deg);
+        -webkit-transform: rotateY(-160deg);
       }
 
-      /* 금박 */
       .decoration {
         position: absolute;
         width: 80%;
@@ -101,6 +107,7 @@
         border: 3px double gold;
         border-radius: 10px;
         opacity: 0.6;
+        transition: opacity 0.5s;
       }
 
       .front-cover h1 {
@@ -120,117 +127,95 @@
         transition: opacity 0.5s;
       }
 
-      .book.open .front-cover h1,
-      .book.open .front-cover p,
-      .book.open .decoration {
+      .front-cover.open h1,
+      .front-cover.open p,
+      .front-cover.open .decoration {
         opacity: 0;
       }
 
-      /* 뒷표지 */
-      .back-cover {
-        position: absolute;
-        width: 400px;
-        height: 600px;
-        background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
-        border: 3px solid #0d1216;
-        border-radius: 5px 0 0 5px;
-        transform: translateZ(-16px);
-        box-shadow: 
-          inset 0 0 20px rgba(0,0,0,0.5),
-          0 0 10px rgba(0,0,0,0.4);
-      }
-
-      .back-cover::before {
-        content: '';
-        position: absolute;
-        left: -8px;
-        top: 0;
-        width: 8px;
-        height: 600px;
-        background: linear-gradient(to left, #0d1216 0%, #050608 100%);
-        border-radius: 2px 0 0 2px;
-      }
-
-      /* 책의 두께감 */
-      .pages {
-        position: absolute;
-        right: -8px;
-        top: 3px;
-        width: 390px;
-        height: 594px;
-        background: repeating-linear-gradient(
-          90deg,
-          #f5f5dc 0px,
-          #fffacd 0.5px,
-          #f5f5dc 1px,
-          #f0e68c 1.5px,
-          #f5f5dc 2px
-        );
-        border-right: 3px solid #d4af37;
-        border-top: 1px solid #e6d9b8;
-        border-bottom: 1px solid #d4af37;
-        transform: translateZ(-8px);
-        box-shadow: 
-          inset -2px 0 5px rgba(0,0,0,0.2),
-          2px 0 3px rgba(0,0,0,0.3);
-      }
-
-      /* 책 아랫면 */
-      .bottom {
-        position: absolute;
-        width: 400px;
-        height: 30px;
-        background: linear-gradient(to bottom, #1a252f 0%, #0d1216 100%);
-        transform-origin: top center;
-        transform: rotateX(90deg) translateZ(570px);
-        border: 2px solid #0d1216;
-      }
-
-      /* 책 윗면 */
-      .top {
-        position: absolute;
-        width: 400px;
-        height: 30px;
-        background: linear-gradient(to top, #2c3e50 0%, #34495e 100%);
-        transform-origin: bottom center;
-        transform: rotateX(90deg) translateZ(-30px);
-        border: 2px solid #1a252f;
-      }
-
-      /* 펼쳐진 페이지 */
-      .open-pages {
-        position: absolute;
-        width: 800px;
-        height: 600px;
-        left: -400px;
-        display: none;
-        z-index: 1;
-        transform-style: preserve-3d;
-      }
-
-      .book.open .open-pages {
-        display: flex;
-      }
-
+      /* 페이지 공통 스타일 */
       .page {
-        width: 400px;
-        height: 600px;
-        background: #f5f5dc;
+        display: inline-block;
+        position: absolute;
+        
+        left: 50%;
+        width: 360px;
+        margin-left: -180px;
+        top: 50%;
+        height: 500px;
+        margin-top: -250px;
+        
+        background-color: #f5f5dc;
         border: 2px solid #d4af37;
         padding: 40px;
-        box-sizing: border-box;
+        
+        backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        
+        transition: transform 1.0s ease;
+        -o-transition: transform 1.0s ease;
+        -moz-transition: transform 1.0s ease;
+        -webkit-transition: transform 1.0s ease;
+
         overflow: hidden;
         font-family: 'Gulim', sans-serif;
         font-weight: 900;
-        position: relative;
       }
 
-      .page.left {
-        border-right: 1px solid #d4af37;
+      .page.odd {
+        z-index: 10;
+        transform-origin: 0% 0%;
+        -o-transform-origin: 0% 0%;
+        -ms-transform-origin: 0% 0%;
+        -moz-transform-origin: 0% 0%;
+        -webkit-transform-origin: 0% 0%;
+        
+        border-radius: 0px 8px 8px 0px;
+        -moz-border-radius: 0px 8px 8px 0px;
+        -webkit-border-radius: 0px 8px 8px 0px;
+        box-shadow: inset 15px 0px 15px -15px rgba(0,0,0, 0.2);
+        -moz-box-shadow: inset 15px 0px 15px -15px rgba(0,0,0, 0.2);
+        -webkit-box-shadow: inset 15px 0px 15px -15px rgba(0,0,0, 0.2);
       }
 
-      .page.right {
-        border-left: 1px solid #d4af37;
+      .page.even {
+        z-index: 9;
+        margin-left: -540px;
+
+        transform-origin: 100% 0%;
+        -o-transform-origin: 100% 0%;
+        -ms-transform-origin: 100% 0%;
+        -moz-transform-origin: 100% 0%;
+        -webkit-transform-origin: 100% 0%;
+        transform: rotateY(180deg);
+        -o-transform: rotateY(180deg);
+        -ms-transform: rotateY(180deg);
+        -moz-transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        
+        border-radius: 8px 0px 0px 8px;
+        -moz-border-radius: 8px 0px 0px 8px;
+        -webkit-border-radius: 8px 0px 0px 8px;
+        box-shadow: inset -15px 0px 15px -15px rgba(0,0,0, 0.3);
+        -moz-box-shadow: inset -15px 0px 15px -15px rgba(0,0,0, 0.3);
+        -webkit-box-shadow: inset -15px 0px 15px -15px rgba(0,0,0, 0.3);
+      }
+
+      .page.odd.turn {
+        transform: rotateY(-180deg);
+        -o-transform: rotateY(-180deg);
+        -ms-transform: rotateY(-180deg);
+        -moz-transform: rotateY(-180deg);
+        -webkit-transform: rotateY(-180deg);
+      }
+
+      .page.even.turn {
+        transform: rotateY(0deg);
+        -o-transform: rotateY(0deg);
+        -ms-transform: rotateY(0deg);
+        -moz-transform: rotateY(0deg);
+        -webkit-transform: rotateY(0deg);
       }
 
       .page-number {
@@ -248,7 +233,7 @@
         gap: 5px;
         align-items: flex-start;
         line-height: 1.3;
-        height: 100%;
+        height: 400px;
         overflow: hidden;
       }
 
@@ -313,106 +298,104 @@
         50% { opacity: 0.5; }
       }
 
-      .book.open #instruction {
+      .book-container.open #instruction {
         display: none;
       }
 
-      /* 페이지 넘김 */
-      .page.right {
-        transform-style: preserve-3d;
-        transform-origin: left center;
-        transition: transform 0.6s ease-in-out;
-        position: relative;
-      }
-
-      .page-turning {
-        animation: pageTurn3D 0.6s ease-in-out forwards;
-      }
-
-      @keyframes pageTurn3D {
-        0% {
-          transform: rotateY(0deg);
-          z-index: 10;
-        }
-        100% {
-          transform: rotateY(-180deg);
-          z-index: 1;
-        }
-      }
-
-      .page-appear {
-        animation: pageAppear3D 0.6s ease-in-out forwards;
-      }
-
-      @keyframes pageAppear3D {
-        0% {
-          transform: rotateY(180deg);
-          opacity: 0;
-        }
-        100% {
-          transform: rotateY(0deg);
-          opacity: 1;
-        }
-      }
-
-      /* 넘어가는 페이지 뒷면 */
-      .page.right::after {
-        content: '';
+      /* 왼쪽 페이지는 책이 열렸을 때만 보이도록 */
+      .left-page {
         position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: #e6dcc8;
-        transform: rotateY(180deg);
-        backface-visibility: visible;
-        z-index: -1;
+        left: 50%;
+        width: 360px;
+        margin-left: -540px;
+        top: 50%;
+        height: 500px;
+        margin-top: -250px;
+        background-color: #f5f5dc;
+        border: 2px solid #d4af37;
+        border-radius: 8px 0px 0px 8px;
+        box-shadow: inset -15px 0px 15px -15px rgba(0,0,0, 0.3);
+        z-index: 1;
+        display: none;
+      }
+
+      .book-container.open .left-page {
+        display: block;
+      }
+
+      /* 첫 페이지(오른쪽)는 항상 보이도록 */
+      #pages-container .page:first-child {
+        display: block !important;
       }
     </style>
   </head>
   <body>
-   
-    
-    <div class="book">
-      <div class="spine"></div>
-      <div class="back-cover"></div>
-      <div class="pages"></div>
-      <div class="top"></div>
-      <div class="bottom"></div>
-      
-      <div class="open-pages">
-        <div class="page left"></div>
-        <div class="page right">
-          <div id="output"></div>
-          <div class="page-number">1</div>
-        </div>
-      </div>
+    <div class="book-container">
+      <div class="left-page"></div>
       
       <div class="front-cover">
         <div class="decoration"></div>
         <h1>양치학개론</h1>
         <p>Introduction of How to Brush My Teeth</p>
       </div>
+
+      <div id="pages-container"></div>
     </div>
 
     <script>
-      const book = document.querySelector('.book');
+      const bookContainer = document.querySelector('.book-container');
       const frontCover = document.querySelector('.front-cover');
-      const openPages = document.querySelector('.open-pages');
-      let outputEl = document.getElementById('output');
+      const pagesContainer = document.getElementById('pages-container');
+      
       let isOpen = false;
       let lastKey = "";
       let repeatCount = 0;
       let currentSize = 20;
       let currentPageNum = 1;
-      const maxPageHeight = 520; // 페이지 높이 제한
+      let pages = [];
+      const maxPageHeight = 400;
+
+      // 첫 페이지 생성
+      createNewPage();
 
       frontCover.addEventListener('click', function() {
         if (!isOpen) {
-          book.classList.add('open');
+          frontCover.classList.add('open');
+          bookContainer.classList.add('open');
           isOpen = true;
         }
       });
+
+      function createNewPage() {
+        const pageDiv = document.createElement('div');
+        pageDiv.className = currentPageNum % 2 === 0 ? 'page even' : 'page odd';
+        
+        const output = document.createElement('div');
+        output.id = 'output';
+        output.style.display = 'flex';
+        output.style.flexWrap = 'wrap';
+        output.style.gap = '5px';
+        output.style.alignItems = 'flex-start';
+        output.style.lineHeight = '1.3';
+        output.style.height = '400px';
+        output.style.overflow = 'hidden';
+        
+        const pageNumber = document.createElement('div');
+        pageNumber.className = 'page-number';
+        pageNumber.textContent = currentPageNum;
+        
+        pageDiv.appendChild(output);
+        pageDiv.appendChild(pageNumber);
+        pagesContainer.appendChild(pageDiv);
+        
+        pages.push({ div: pageDiv, output: output });
+        
+        return output;
+      }
+
+      function getCurrentOutput() {
+        return pages[pages.length - 1].output;
+      }
 
       function getRandomColor() {
         const r = Math.floor(Math.random() * 256);
@@ -422,6 +405,7 @@
       }
 
       function addDomElement(tag, attrs) {
+        const outputEl = getCurrentOutput();
         const el = document.createElement(tag);
         if (attrs) {
           for (const k in attrs) {
@@ -447,65 +431,26 @@
         
         outputEl.appendChild(el);
         
-        // 페이지 높이 체크
         if (outputEl.scrollHeight > maxPageHeight) {
-          outputEl.removeChild(el); // 마지막 요소 제거
-          turnPage(); // 페이지 넘김
-          outputEl.appendChild(el); // 새 페이지에 추가
+          outputEl.removeChild(el);
+          turnPage();
+          getCurrentOutput().appendChild(el);
         }
         
         return el;
       }
 
       function turnPage() {
+        // 현재 페이지에 turn 클래스 추가
+        const currentPage = pages[pages.length - 1].div;
+        currentPage.classList.add('turn');
+        
+        // z-index 조정
+        currentPage.style.zIndex = pages.length;
+        
+        // 다음 페이지 생성
         currentPageNum++;
-        
-        const rightPage = document.querySelector('.page.right');
-        
-        // 현재 페이지 복사 (넘어갈 페이지)
-        const turningPage = rightPage.cloneNode(true);
-        turningPage.style.position = 'absolute';
-        turningPage.style.left = '400px';
-        turningPage.style.zIndex = '10';
-        openPages.appendChild(turningPage);
-        
-        // 페이지 넘김 애니메이션
-        setTimeout(() => {
-          turningPage.classList.add('page-turning');
-        }, 10);
-        
-        // 새 페이지 준비
-        const newOutput = document.createElement('div');
-        newOutput.id = 'output';
-        newOutput.style.display = 'flex';
-        newOutput.style.flexWrap = 'wrap';
-        newOutput.style.gap = '5px';
-        newOutput.style.alignItems = 'flex-start';
-        newOutput.style.lineHeight = '1.3';
-        newOutput.style.height = '100%';
-        newOutput.style.overflow = 'hidden';
-        
-        const newPageNum = document.createElement('div');
-        newPageNum.className = 'page-number';
-        newPageNum.textContent = currentPageNum;
-        
-        rightPage.innerHTML = '';
-        rightPage.appendChild(newOutput);
-        rightPage.appendChild(newPageNum);
-        rightPage.style.opacity = '0';
-        
-        outputEl = newOutput;
-        
-        // 애니메이션 완료 후 정리
-        setTimeout(() => {
-          turningPage.remove();
-          rightPage.style.opacity = '1';
-          rightPage.classList.add('page-appear');
-          
-          setTimeout(() => {
-            rightPage.classList.remove('page-appear');
-          }, 600);
-        }, 600);
+        createNewPage();
       }
 
       function playSound(url) {
@@ -568,6 +513,8 @@
           repeatCount = 0;
           currentSize = 20;
         }
+
+        const outputEl = getCurrentOutput();
 
         if (event.key === "Backspace") {
           if (outputEl.lastChild) {
