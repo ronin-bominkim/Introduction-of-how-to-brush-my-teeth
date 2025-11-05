@@ -241,7 +241,8 @@
         display: block;
       }
 
-      #pages-container .page:first-child {
+      #pages-container .page:first-child,
+      #pages-container .page:nth-child(2) {
         display: block !important;
       }
     </style>
@@ -272,7 +273,9 @@
       let pages = [];
       const maxPageHeight = 400;
 
-      createNewPage();
+      // 처음 두 페이지 생성 (왼쪽=짝수, 오른쪽=홀수)
+      createNewPage(); // 페이지 1 (오른쪽)
+      createNewPage(); // 페이지 2 (왼쪽)
 
       frontCover.addEventListener('click', function() {
         if (!isOpen) {
@@ -284,7 +287,7 @@
 
       function createNewPage() {
         const pageDiv = document.createElement('div');
-        pageDiv.className = currentPageNum % 2 === 0 ? 'page even' : 'page odd';
+        pageDiv.className = currentPageNum % 2 === 1 ? 'page odd' : 'page even';
         
         const output = document.createElement('div');
         output.id = 'output';
@@ -305,11 +308,18 @@
         pagesContainer.appendChild(pageDiv);
         
         pages.push({ div: pageDiv, output: output });
+        currentPageNum++;
         
         return output;
       }
 
       function getCurrentOutput() {
+        // 넘겨지지 않고 꽉 차지 않은 페이지 찾기
+        for (let i = 0; i < pages.length; i++) {
+          if (!pages[i].div.classList.contains('turn') && !pages[i].full) {
+            return pages[i].output;
+          }
+        }
         return pages[pages.length - 1].output;
       }
 
@@ -347,9 +357,26 @@
         
         outputEl.appendChild(el);
         
+        // 페이지가 넘칠 경우
         if (outputEl.scrollHeight > maxPageHeight) {
           outputEl.removeChild(el);
-          turnPage();
+          
+          // 현재 페이지를 꽉 찬 것으로 표시
+          for (let i = 0; i < pages.length; i++) {
+            if (pages[i].output === outputEl) {
+              pages[i].full = true;
+              break;
+            }
+          }
+          
+          // 다음 페이지 가져오기
+          const nextOutput = getCurrentOutput();
+          
+          // 만약 다음 페이지가 없으면 새로 생성
+          if (nextOutput === outputEl) {
+            turnPage();
+          }
+          
           getCurrentOutput().appendChild(el);
         }
         
@@ -357,10 +384,18 @@
       }
 
       function turnPage() {
-        const currentPage = pages[pages.length - 1].div;
-        currentPage.classList.add('turn');
-        currentPage.style.zIndex = pages.length;
-        currentPageNum++;
+        // 현재 쓰고 있던 두 페이지(왼쪽, 오른쪽) 모두 넘기기
+        let turned = 0;
+        for (let i = 0; i < pages.length && turned < 2; i++) {
+          if (!pages[i].div.classList.contains('turn')) {
+            pages[i].div.classList.add('turn');
+            pages[i].div.style.zIndex = pages.length + i;
+            turned++;
+          }
+        }
+        
+        // 다음 두 페이지 생성
+        createNewPage();
         createNewPage();
       }
 
@@ -531,7 +566,7 @@
         } else if (event.key === "m") {
           addDomElement("span", { text: "제 7장. 양치의 마무리는 가그린. " });
         } else if (event.key === "M") {
-          addDomElement("span", { text: "Chapter 7. Finish your brushing with a mouthwash. " });
+          addDomElement("span", { text: "Chapter 7. Finish your brushing with a mouthwash. "  });
         } else {
           addDomElement("span", { text: "고도로 발전한 나의 양치 실력! 양치! 양치! 양치! "});
         }
